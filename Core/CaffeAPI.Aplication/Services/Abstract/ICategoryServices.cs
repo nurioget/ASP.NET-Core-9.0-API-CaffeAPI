@@ -1,4 +1,5 @@
 ﻿using CaffeAPI.Aplication.Dtos.CategoryDtos;
+using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace CaffeAPI.Aplication.Services.Abstract
 {
     public interface ICategoryServices
     {
-        Task<List<ResultCategoryDto>> GetAllCategories();
-        Task<DetailCategoryDto> GetByIdCategory(int id);
-        Task AddCategory(CreateCategoryDto dto);
-        Task UpdateCategory(UpdateCategoryDto dto);
-        Task DeleteCategory(int id);
+        Task<ResponseDto<List<ResultCategoryDto>>> GetAllCategories();
+        Task<ResponseDto<DetailCategoryDto>> GetByIdCategory(int id);
+        Task <ResponseDto<object>>AddCategory(CreateCategoryDto dto);
+        Task<ResponseDto<object>> UpdateCategory(UpdateCategoryDto dto);
+        Task<ResponseDto<object>> DeleteCategory(int id);
     }
 }
 

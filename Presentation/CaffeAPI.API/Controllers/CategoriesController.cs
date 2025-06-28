@@ -1,4 +1,5 @@
 ﻿using CaffeAPI.Aplication.Dtos.CategoryDtos;
+using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using CaffeAPI.Aplication.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,14 @@ namespace CaffeAPI.API.Controllers
         public async Task<IActionResult> GetAllCategories()
         {
             var result = await _categoryServices.GetAllCategories();
+            if (!result.Success)
+            {
+                if (result.ErrorCodes == ErrorCodes.notFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -27,27 +36,55 @@ namespace CaffeAPI.API.Controllers
         public async Task<IActionResult> GetByIdCategory(int id)
         {
             var result = await _categoryServices.GetByIdCategory(id);
+            if (!result.Success)
+            {
+                if (result.ErrorCodes == ErrorCodes.notFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
             return Ok(result);
         }
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] CreateCategoryDto dto)
         {
-            await _categoryServices.AddCategory(dto);
-            return Ok("Kategori Oluşturuldu");
+          var result=  await _categoryServices.AddCategory(dto);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto dto)
         {
-            await _categoryServices.UpdateCategory(dto);
-            return Ok("Kategori Güncellendi");
+            var result = await _categoryServices.UpdateCategory(dto);
+            if(!result.Success)
+            {
+                if (result.ErrorCodes == ErrorCodes.notFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            await _categoryServices.DeleteCategory(id);
-            return Ok("Kategori Silindi");
+            var result = await _categoryServices.DeleteCategory(id);
+            if (!result.Success)
+            {
+                if (result.ErrorCodes == ErrorCodes.notFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }

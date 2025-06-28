@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
+using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using CaffeAPI.Aplication.Interfaces;
 using CaffeAPI.Aplication.Services.Abstract;
 using CaffeAPI.Domain.Entities;
@@ -22,36 +23,96 @@ namespace CaffeAPI.Aplication.Services.Concrete
             _mapper = mapper;
         }
 
-        public async Task AddCategory(CreateCategoryDto dto)
+        public async Task<ResponseDto<object>> AddCategory(CreateCategoryDto dto)
         {
-            var category = _mapper.Map<Category>(dto);
-            await _categoryRepository.AddAsync(category);
+            try
+            {
+
+                var category = _mapper.Map<Category>(dto);
+                await _categoryRepository.AddAsync(category);
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Kategori Oluşturuldu" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Hata oluştu", ErrorCodes = ErrorCodes.Exception };
+            }
+
         }
 
-        public async Task DeleteCategory(int id)
+        public async Task<ResponseDto<object>> DeleteCategory(int id)
         {
-            var category = _categoryRepository.GetByIdAsync(id);
-            await _categoryRepository.DeleteAsync(category.Result);
+            try
+            {
+                var category = await _categoryRepository.GetByIdAsync(id);
+                if (category == null)
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                }
+                await _categoryRepository.DeleteAsync(category);
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Kategori Silindi" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Hata Oluştu", ErrorCodes = ErrorCodes.Exception };
+            }
+
         }
 
-        public async Task<List<ResultCategoryDto>> GetAllCategories()
+        public async Task<ResponseDto<List<ResultCategoryDto>>> GetAllCategories()
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            var result=_mapper.Map<List<ResultCategoryDto>>(categories);   
-            return result;
+            try
+            {
+                var categories = await _categoryRepository.GetAllAsync();
+                if (categories.Count == 0)
+                {
+                    return new ResponseDto<List<ResultCategoryDto>> { Success = false, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                }
+                var result = _mapper.Map<List<ResultCategoryDto>>(categories);
+                return new ResponseDto<List<ResultCategoryDto>> { Success = true, Data = result };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<List<ResultCategoryDto>> { Success = false, Message = "Bir Hata Oluştu", ErrorCodes = ErrorCodes.Exception };
+            }
+
         }
 
-        public async Task<DetailCategoryDto> GetByIdCategory(int id)
+        public async Task<ResponseDto<DetailCategoryDto>> GetByIdCategory(int id)
         {
-            var category =await _categoryRepository.GetByIdAsync(id);
-            var result=_mapper.Map<DetailCategoryDto>(category);    
-            return result;
+            try
+            {
+                var category = await _categoryRepository.GetByIdAsync(id);
+                if (category == null)
+                {
+                    return new ResponseDto<DetailCategoryDto> { Success = false, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                }
+                var result = _mapper.Map<DetailCategoryDto>(category);
+                return new ResponseDto<DetailCategoryDto> { Success = true, Data = result };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<DetailCategoryDto> { Success = false, Message = "Bir Hata Oluştu", ErrorCodes = ErrorCodes.Exception };
+            }
+
         }
 
-        public async Task UpdateCategory(UpdateCategoryDto dto)
+        public async Task<ResponseDto<object>> UpdateCategory(UpdateCategoryDto dto)
         {
-            var category = _mapper.Map<Category>(dto);
-            await _categoryRepository.UpdateAsync(category);
+            try
+            {
+                var categorydb = await _categoryRepository.GetByIdAsync(dto.Id);
+                if (categorydb == null)
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                }
+                var category = _mapper.Map(dto,categorydb);
+                await _categoryRepository.UpdateAsync(category);
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Kategori Güncellendi" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Hata Oluştu", ErrorCodes = ErrorCodes.Exception };
+            }
         }
     }
 }
