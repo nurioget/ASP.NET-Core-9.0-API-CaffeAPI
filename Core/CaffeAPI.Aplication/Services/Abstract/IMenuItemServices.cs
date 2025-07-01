@@ -1,4 +1,5 @@
 ﻿using CaffeAPI.Aplication.Dtos.MenuItemDtos;
+using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace CaffeAPI.Aplication.Services.Abstract
 {
     public interface IMenuItemServices
     {
-        Task<List<ResultMenuItemDto>> GetAllMenuItems();
-        Task<DetailMenuItemDto> GetByIdMenuItem(int id);
-        Task AddMenuItem(CreateMenuItemDto dto);
-        Task UpdateMenuItem(UpdateMenuItemDto dto);
-        Task DeleteMenuItem(int id);
+        Task<ResponseDto<List<ResultMenuItemDto>>> GetAllMenuItems();
+        Task<ResponseDto<DetailMenuItemDto>> GetByIdMenuItem(int id);
+        Task<ResponseDto<object>> AddMenuItem(CreateMenuItemDto dto);
+        Task<ResponseDto<object>> UpdateMenuItem(UpdateMenuItemDto dto);
+        Task<ResponseDto<object>> DeleteMenuItem(int id);
     }
 }

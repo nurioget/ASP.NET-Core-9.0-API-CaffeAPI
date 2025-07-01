@@ -35,7 +35,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var validate = await _createCategoryValidator.ValidateAsync(dto);
                 if (!validate.IsValid)
                 {
-                    return new ResponseDto<object> { Success = false, Message = string.Join(", ", validate.Errors.Select(x => x.ErrorMessage)), ErrorCodes = ErrorCodes.VlidationError };
+                    return new ResponseDto<object> { Success = false, Message = string.Join(", ", validate.Errors.Select(x => x.ErrorMessage)), ErrorCodes = ErrorCodes.ValidationError };
                 }
                 var category = _mapper.Map<Category>(dto);
                 await _categoryRepository.AddAsync(category);
@@ -55,7 +55,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var category = await _categoryRepository.GetByIdAsync(id);
                 if (category == null)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.NotFound };
                 }
                 await _categoryRepository.DeleteAsync(category);
                 return new ResponseDto<object> { Success = true, Data = null, Message = "Kategori Silindi" };
@@ -74,7 +74,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var categories = await _categoryRepository.GetAllAsync();
                 if (categories.Count == 0)
                 {
-                    return new ResponseDto<List<ResultCategoryDto>> { Success = false, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                    return new ResponseDto<List<ResultCategoryDto>> { Success = false, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.NotFound };
                 }
                 var result = _mapper.Map<List<ResultCategoryDto>>(categories);
                 return new ResponseDto<List<ResultCategoryDto>> { Success = true, Data = result };
@@ -93,7 +93,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var category = await _categoryRepository.GetByIdAsync(id);
                 if (category == null)
                 {
-                    return new ResponseDto<DetailCategoryDto> { Success = false, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                    return new ResponseDto<DetailCategoryDto> { Success = false, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.NotFound };
                 }
                 var result = _mapper.Map<DetailCategoryDto>(category);
                 return new ResponseDto<DetailCategoryDto> { Success = true, Data = result };
@@ -112,12 +112,12 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var validate = await _updateCategoryValidator.ValidateAsync(dto);
                 if (!validate.IsValid)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(", ", validate.Errors.Select(x => x.ErrorMessage)), ErrorCodes = ErrorCodes.VlidationError };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(", ", validate.Errors.Select(x => x.ErrorMessage)), ErrorCodes = ErrorCodes.ValidationError };
                 }
                 var categorydb = await _categoryRepository.GetByIdAsync(dto.Id);
                 if (categorydb == null)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.notFound };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Kategori Bulunamadı", ErrorCodes = ErrorCodes.NotFound };
                 }
                 var category = _mapper.Map(dto, categorydb);
                 await _categoryRepository.UpdateAsync(category);

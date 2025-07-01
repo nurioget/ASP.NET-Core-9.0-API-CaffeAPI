@@ -1,4 +1,5 @@
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
+using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Interfaces;
 using CaffeAPI.Aplication.Mapping;
 using CaffeAPI.Aplication.Services.Abstract;
@@ -33,6 +34,8 @@ builder.Services.AddAutoMapper(typeof(GeneralMapping));
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryDto>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateCategoryDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateMenuItemDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateMenuItemDto>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
