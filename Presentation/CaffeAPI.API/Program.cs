@@ -27,8 +27,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddControllers();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<ICategoryServices, CategoryServices>();
 builder.Services.AddScoped<IMenuItemServices, MenuItemServices>();
+builder.Services.AddScoped<ITableServices, TableServices>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 
