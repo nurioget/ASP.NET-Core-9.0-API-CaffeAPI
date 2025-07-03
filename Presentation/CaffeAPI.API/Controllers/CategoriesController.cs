@@ -23,7 +23,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _categoryServices.GetAllCategories();
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }
@@ -38,7 +38,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _categoryServices.GetByIdCategory(id);
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }
@@ -52,7 +52,7 @@ namespace CaffeAPI.API.Controllers
           var result=  await _categoryServices.AddCategory(dto);
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.ValidationError)
+                if (result.ErrorCode == ErrorCodes.ValidationError)
                 {
                     return Ok(result);
                 }
@@ -67,7 +67,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _categoryServices.UpdateCategory(dto);
             if(!result.Success)
             {
-                if (result.ErrorCodes is ErrorCodes.NotFound or ErrorCodes.ValidationError)
+                if (result.ErrorCode is ErrorCodes.NotFound or ErrorCodes.ValidationError)
                 {
                     return Ok(result);
                 }
@@ -82,7 +82,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _categoryServices.DeleteCategory(id);
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }

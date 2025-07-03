@@ -37,12 +37,12 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var validate = await _createMenuItemValidator.ValidateAsync(dto);
                 if (!validate.IsValid)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCodes = ErrorCodes.ValidationError };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCode = ErrorCodes.ValidationError };
                 }
                 var checkCategory = await _categoryRepository.GetByIdAsync(dto.CategoryId);
                 if (checkCategory==null)
                 {
-                    return new ResponseDto<object> { Success = false, Data = dto, Message = "Eklmek istediğiniz kategori bulunamadı.", ErrorCodes = ErrorCodes.NotFound };
+                    return new ResponseDto<object> { Success = false, Data = dto, Message = "Eklmek istediğiniz kategori bulunamadı.", ErrorCode = ErrorCodes.NotFound };
                 }
                 var menuItem = _mapper.Map<MenuItem>(dto);
                 await _menuItemRepository.AddAsync(menuItem);
@@ -50,7 +50,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
             }
             catch (Exception ex)
             {
-                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCodes = ErrorCodes.Exception };
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCode = ErrorCodes.Exception };
             }
         }
 
@@ -61,14 +61,14 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var menuItem = await _menuItemRepository.GetByIdAsync(id);
                 if (menuItem==null)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = "Menu Item Bulunamadı" ,ErrorCodes=ErrorCodes.NotFound};
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Menu Item Bulunamadı" ,ErrorCode=ErrorCodes.NotFound};
                 }
                 await _menuItemRepository.DeleteAsync(menuItem);
                 return new ResponseDto<object> { Success = true, Data = null, Message = "Menu Item Başarıyla Silindi" };
             }
             catch (Exception ex)
             {
-                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCodes = ErrorCodes.Exception };
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCode = ErrorCodes.Exception };
             }
         }
 
@@ -80,14 +80,14 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var category=await _categoryRepository.GetAllAsync();
                 if (menuItems.Count == 0)
                 {
-                    return new ResponseDto<List<ResultMenuItemDto>> { Success = false, Data = null, Message = "Menü Items Bulunamadı", ErrorCodes = ErrorCodes.NotFound };
+                    return new ResponseDto<List<ResultMenuItemDto>> { Success = false, Data = null, Message = "Menü Items Bulunamadı", ErrorCode = ErrorCodes.NotFound };
                 }
                 var result = _mapper.Map<List<ResultMenuItemDto>>(menuItems);
                 return new ResponseDto<List<ResultMenuItemDto>> { Success = true, Data = result };
             }
             catch (Exception ex)
             {
-                return new ResponseDto<List<ResultMenuItemDto>> { Success = false, Data = null, Message = "Bir hata oluştu", ErrorCodes = ErrorCodes.Exception };
+                return new ResponseDto<List<ResultMenuItemDto>> { Success = false, Data = null, Message = "Bir hata oluştu", ErrorCode = ErrorCodes.Exception };
             }
         }
 
@@ -97,7 +97,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
             var category=await _categoryRepository.GetByIdAsync(menuItem.CategoryId);   
             if (menuItem == null)
             {
-                return new ResponseDto<DetailMenuItemDto> { Success = false, Data = null, Message = "Menu Item bulunamadı", ErrorCodes = ErrorCodes.NotFound };
+                return new ResponseDto<DetailMenuItemDto> { Success = false, Data = null, Message = "Menu Item bulunamadı", ErrorCode = ErrorCodes.NotFound };
             }
             var result = _mapper.Map<DetailMenuItemDto>(menuItem);
             return new ResponseDto<DetailMenuItemDto> { Success = true, Data = result };
@@ -110,17 +110,17 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var validate = await _updateMenuItemValidator.ValidateAsync(dto);
                 if (!validate.IsValid)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCodes = ErrorCodes.ValidationError };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCode = ErrorCodes.ValidationError };
                 }
                 var menuItem = await _menuItemRepository.GetByIdAsync(dto.Id);
                 if (menuItem == null)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = "Menu Item Bulunamadı", ErrorCodes = ErrorCodes.NotFound };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Menu Item Bulunamadı", ErrorCode = ErrorCodes.NotFound };
                 }
                 var checkCategory = await _categoryRepository.GetByIdAsync(dto.CategoryId);
                 if (checkCategory == null)
                 {
-                    return new ResponseDto<object> { Success = false, Data = dto, Message = "Eklmek istediğiniz kategori bulunamadı.", ErrorCodes = ErrorCodes.NotFound };
+                    return new ResponseDto<object> { Success = false, Data = dto, Message = "Eklmek istediğiniz kategori bulunamadı.", ErrorCode = ErrorCodes.NotFound };
                 }
                 var newMenuItem = _mapper.Map(dto, menuItem);
                 await _menuItemRepository.UpdateAsync(newMenuItem);
@@ -128,7 +128,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
             }
             catch (Exception ex)
             {
-                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCodes = ErrorCodes.Exception };
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCode = ErrorCodes.Exception };
             }
         }
     }

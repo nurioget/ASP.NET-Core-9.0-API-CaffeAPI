@@ -23,13 +23,13 @@ namespace CaffeAPI.API.Controllers
             var result = await _tableServices.GetAllTables();
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }
                 return BadRequest(result);
             }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -38,7 +38,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _tableServices.GetTableById(id);
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }
@@ -53,7 +53,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _tableServices.GetByTableNumber(tableNumber);
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }
@@ -68,7 +68,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _tableServices.AddTable(dto);
             if (!result.Success)
             {
-                if (result.ErrorCodes is ErrorCodes.ValidationError or ErrorCodes.DuplicateError)
+                if (result.ErrorCode is ErrorCodes.ValidationError or ErrorCodes.DuplicateError)
                 {
                     return Ok(result);
                 }
@@ -83,7 +83,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _tableServices.UpdateTable(dto);
             if (!result.Success)
             {
-                if (result.ErrorCodes is ErrorCodes.ValidationError or ErrorCodes.NotFound)
+                if (result.ErrorCode is ErrorCodes.ValidationError or ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }
@@ -98,7 +98,67 @@ namespace CaffeAPI.API.Controllers
             var result = await _tableServices.DeleteTable(id);
             if (!result.Success)
             {
-                if (result.ErrorCodes == ErrorCodes.NotFound)
+                if (result.ErrorCode == ErrorCodes.NotFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("getallisactivetablesgeneric")]
+        public async Task<IActionResult> GetAllIsactiveTablesGeneric()
+        {
+            var result = await _tableServices.GetAllActiveTablesGeneric();
+            if (!result.Success)
+            {
+                if (result.ErrorCode == ErrorCodes.NotFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("getallisactivetables")]
+        public async Task<IActionResult> GetAllIsActiveTables()
+        {
+            var result = await _tableServices.GetAllTables();
+            if (!result.Success)
+            {
+                if (result.ErrorCode == ErrorCodes.NotFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpPut("updatetablestatusbyid")]
+        public async Task<IActionResult> UpdateTableStatusById(int id)
+        {
+            var result = await _tableServices.UpdateTableStatusById(id);
+            if (!result.Success)
+            {
+                if (result.ErrorCode is ErrorCodes.ValidationError or ErrorCodes.NotFound)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpPut("updatetablestatusbytablenumber")]
+        public async Task<IActionResult> UpdateTableStatusByTableNumber(int tableNumber)
+        {
+            var result = await _tableServices.UpdateTableStatusByTableNumber(tableNumber);
+            if (!result.Success)
+            {
+                if (result.ErrorCode is ErrorCodes.ValidationError or ErrorCodes.NotFound)
                 {
                     return Ok(result);
                 }

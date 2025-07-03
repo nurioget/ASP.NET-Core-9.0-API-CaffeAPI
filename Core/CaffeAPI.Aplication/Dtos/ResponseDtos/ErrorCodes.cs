@@ -13,5 +13,7 @@ namespace CaffeAPI.Aplication.Dtos.ResponseDtos
         public const string Exception = "EXCEPTION";
         public const string ValidationError = "VALIDATION_ERROR";
         public const string DuplicateError = "DUPLICATE_ERROR";
+        public const string Forbidden = "FORBİDDEN";
+        public const string BadRequest = "BAD_REQUEST";
     }
 }

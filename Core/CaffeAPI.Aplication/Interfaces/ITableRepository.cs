@@ -10,5 +10,6 @@ namespace CaffeAPI.Aplication.Interfaces
     public interface ITableRepository
     {
         Task<Table> GetByTableNumberAsync(int tableNumber);
+        Task<List<Table>> GetAllActiveTablesAsync();
     }
 }
