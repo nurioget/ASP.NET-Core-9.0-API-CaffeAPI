@@ -32,12 +32,12 @@ namespace CaffeAPI.Aplication.Services.Concrete
         {
             try
             {
-                var validate=await _createOrderItemValidator.ValidateAsync(dto);
+                var validate = await _createOrderItemValidator.ValidateAsync(dto);
                 if (!validate.IsValid)
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",",validate.Errors.Select(x=>x.ErrorMessage)), ErrorCode = ErrorCodes.ValidationError };
+                    return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCode = ErrorCodes.ValidationError };
                 }
-                var result= _mapper.Map<OrderItem>(dto);    
+                var result = _mapper.Map<OrderItem>(dto);
                 await _orderItemRepository.AddAsync(result);
                 return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş öğesi başarıyla eklendi" };
             }
@@ -57,7 +57,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                     return new ResponseDto<object> { Success = false, Data = null, Message = "Sipariş öğesi bulunamadı", ErrorCode = ErrorCodes.NotFound };
                 }
                 await _orderItemRepository.DeleteAsync(checkOrderItem);
-                return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş öğesi başarıyla silindi"  };
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş öğesi başarıyla silindi" };
             }
             catch (Exception ex)
             {
@@ -70,12 +70,12 @@ namespace CaffeAPI.Aplication.Services.Concrete
             try
             {
                 var db = await _orderItemRepository.GetAllAsync();
-                if (db.Count==0)
+                if (db.Count == 0)
                 {
                     return new ResponseDto<List<ResultOrderItemDto>> { Success = false, Data = null, Message = "Sipariş bulunamadı", ErrorCode = ErrorCodes.NotFound };
                 }
                 var result = _mapper.Map<List<ResultOrderItemDto>>(db);
-                return new ResponseDto<List<ResultOrderItemDto>> { Success = true, Data = result};
+                return new ResponseDto<List<ResultOrderItemDto>> { Success = true, Data = result };
             }
             catch (Exception ex)
             {
@@ -111,12 +111,12 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 {
                     return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCode = ErrorCodes.ValidationError };
                 }
-                var checkOrderItem= await _orderItemRepository.GetByIdAsync(dto.Id);
+                var checkOrderItem = await _orderItemRepository.GetByIdAsync(dto.Id);
                 if (checkOrderItem == null)
                 {
                     return new ResponseDto<object> { Success = false, Data = null, Message = "Sipariş öğesi bulunamadı", ErrorCode = ErrorCodes.NotFound };
                 }
-                var result = _mapper.Map(dto,checkOrderItem);
+                var result = _mapper.Map(dto, checkOrderItem);
                 await _orderItemRepository.UpdateAsync(result);
                 return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş öğesi başarıyla güncellendi" };
             }
