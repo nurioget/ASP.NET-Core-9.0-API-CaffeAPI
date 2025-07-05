@@ -18,12 +18,13 @@ namespace CaffeAPI.Aplication.Services.Concrete
     {
         private readonly IGenericRepository<Order> _orderRepository;
         private readonly IGenericRepository<OrderItem> _orderItemRepository;
+        private readonly IGenericRepository<MenuItem> _menuItemRepository;
         private readonly IOrderRepository _orderRepository2;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateOrderDto> _createOrderValidator;
         private readonly IValidator<UpdateOrderDto> _updateOrderValidator;
 
-        public OrderServices(IGenericRepository<Order> orderRepository, IMapper mapper, IValidator<CreateOrderDto> createOrderValidator, IValidator<UpdateOrderDto> updateOrderValidator, IGenericRepository<OrderItem> orderItemRepository, IOrderRepository orderRepository2)
+        public OrderServices(IGenericRepository<Order> orderRepository, IMapper mapper, IValidator<CreateOrderDto> createOrderValidator, IValidator<UpdateOrderDto> updateOrderValidator, IGenericRepository<OrderItem> orderItemRepository, IOrderRepository orderRepository2, IGenericRepository<MenuItem> menuItemRepository)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
@@ -31,6 +32,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
             _updateOrderValidator = updateOrderValidator;
             _orderItemRepository = orderItemRepository;
             _orderRepository2 = orderRepository2;
+            _menuItemRepository = menuItemRepository;
         }
 
         public async Task<ResponseDto<object>> AddOrder(CreateOrderDto dto)
@@ -42,8 +44,18 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 {
                     return new ResponseDto<object> { Success = false, Data = null, Message = string.Join(",", validate.Errors.Select(x => x.ErrorMessage)), ErrorCode = ErrorCodes.ValidationError };
                 }
-                var order = _mapper.Map<Order>(dto);
-                await _orderRepository.AddAsync(order);
+                var result = _mapper.Map<Order>(dto);
+                result.Status = OrderStatus.Hazirlaniyor;
+                result.CreatedAt = DateTime.Now;
+                decimal totalPrice = 0;
+                foreach (var item in result.OrderItems)
+                {
+                    item.MenuItem=await _menuItemRepository.GetByIdAsync(item.MenuItemId);
+                    item.Price=item.MenuItem.Price * item.Quantity;
+                    totalPrice += item.Price;
+                }
+                result.TotalPrice = totalPrice;
+                await _orderRepository.AddAsync(result);
                 return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş Başarıyla Eklendi" };
             }
             catch (Exception ex)
@@ -142,6 +154,66 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 var result = _mapper.Map(dto, orderdb);
                 await _orderRepository.UpdateAsync(result);
                 return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş Başarıyla Güncellendi" };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Sorun Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
+        public async Task<ResponseDto<object>> UpdateOrderByStatusHazir(int orderId)
+        {
+            try
+            {
+               
+                var orderdb = await _orderRepository.GetByIdAsync(orderId);
+                if (orderdb == null)
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Sipariş Bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                }
+                orderdb.Status=OrderStatus.Hazir;
+                await _orderRepository.UpdateAsync(orderdb);
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş Durumu Hazır Olarak Güncellendi" };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Sorun Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
+        public async Task<ResponseDto<object>> UpdateOrderByStatusTeslimEdildi(int orderId)
+        {
+            try
+            {
+
+                var orderdb = await _orderRepository.GetByIdAsync(orderId);
+                if (orderdb == null)
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Sipariş Bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                }
+                orderdb.Status = OrderStatus.TeslimEdildi;
+                await _orderRepository.UpdateAsync(orderdb);
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş Durumu Teslim Edildi Olarak Güncellendi" };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Sorun Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
+        public async Task<ResponseDto<object>> UpdateOrderByStatusİptalEdildi(int orderId)
+        {
+            try
+            {
+
+                var orderdb = await _orderRepository.GetByIdAsync(orderId);
+                if (orderdb == null)
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = "Sipariş Bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                }
+                orderdb.Status = OrderStatus.IptalEdildi;
+                await _orderRepository.UpdateAsync(orderdb);
+                return new ResponseDto<object> { Success = true, Data = null, Message = "Sipariş Durumu İptal edildi Olarak Güncellendi" };
             }
             catch (Exception)
             {

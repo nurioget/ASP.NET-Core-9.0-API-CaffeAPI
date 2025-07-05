@@ -59,6 +59,27 @@ namespace CaffeAPI.API.Controllers
             var result = await _orderServices.GetAllOrderWithDetail();
             return CreateResponse(result);
         }
+
+        [HttpPut("UpdateOrderByStatusHazir")]
+        public async Task<IActionResult> UpdateOrderByStatusHazir(int orderId)
+        {
+            var result = await _orderServices.UpdateOrderByStatusHazir(orderId);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("UpdateOrderByStatusTeslimEdildi")]
+        public async Task<IActionResult> UpdateOrderByStatusTeslimEdildi(int orderId)
+        {
+            var result = await _orderServices.UpdateOrderByStatusTeslimEdildi(orderId);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("UpdateOrderByStatusİptalEdildi")]
+        public async Task<IActionResult> UpdateOrderByStatusİptalEdildi(int orderId)
+        {
+            var result = await _orderServices.UpdateOrderByStatusİptalEdildi(orderId);
+            return CreateResponse(result);
+        }
     }
 }
 
