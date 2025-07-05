@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
+using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using CaffeAPI.Aplication.Interfaces;
 using CaffeAPI.Aplication.Services.Abstract;
@@ -16,13 +17,15 @@ namespace CaffeAPI.Aplication.Services.Concrete
     public class CategoryServices : ICategoryServices
     {
         private readonly IGenericRepository<Category> _categoryRepository;
+        private readonly IMenuItemRepository _menuItemRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateCategoryDto> _createCategoryValidator;
         private readonly IValidator<UpdateCategoryDto> _updateCategoryValidator;
 
-        public CategoryServices(IGenericRepository<Category> categoryRepository, IMapper mapper, IValidator<CreateCategoryDto> createCategoryValidator, IValidator<UpdateCategoryDto> updateCategoryValidator)
+        public CategoryServices(IGenericRepository<Category> categoryRepository, IMenuItemRepository menuItemRepository, IMapper mapper, IValidator<CreateCategoryDto> createCategoryValidator, IValidator<UpdateCategoryDto> updateCategoryValidator)
         {
             _categoryRepository = categoryRepository;
+            _menuItemRepository = menuItemRepository;
             _mapper = mapper;
             _createCategoryValidator = createCategoryValidator;
             _updateCategoryValidator = updateCategoryValidator;
@@ -95,7 +98,10 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 {
                     return new ResponseDto<DetailCategoryDto> { Success = false, Message = "Kategori Bulunamadı", ErrorCode = ErrorCodes.NotFound };
                 }
+                var menuItems = await _menuItemRepository.GetMenuItemsFilterByCategoryId(id);
                 var result = _mapper.Map<DetailCategoryDto>(category);
+                var newList = _mapper.Map<List<CategoriesMenuItemDto>>(menuItems);
+                result.MenuItems = newList;
                 return new ResponseDto<DetailCategoryDto> { Success = true, Data = result };
             }
             catch (Exception ex)
@@ -103,6 +109,31 @@ namespace CaffeAPI.Aplication.Services.Concrete
                 return new ResponseDto<DetailCategoryDto> { Success = false, Message = "Bir Hata Oluştu", ErrorCode = ErrorCodes.Exception };
             }
 
+        }
+
+        public async Task<ResponseDto<List<ResultCategoriesWithMenuDto>>> GetCategoriesWithMenuItems()
+        {
+            try
+            {
+                var categories = await _categoryRepository.GetAllAsync();
+                if (categories.Count == 0)
+                {
+                    return new ResponseDto<List<ResultCategoriesWithMenuDto>> { Success = false, Message = "Kategori Bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                }
+                var result = _mapper.Map<List<ResultCategoriesWithMenuDto>>(categories);
+
+                foreach (var item in result)
+                {
+                    var listmenuitems = await _menuItemRepository.GetMenuItemsFilterByCategoryId(item.Id);
+                    var newList = _mapper.Map<List<CategoriesMenuItemDto>>(listmenuitems);
+                    item.MenuItems = newList;
+                }
+                return new ResponseDto<List<ResultCategoriesWithMenuDto>> { Success = true, Data = result };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<List<ResultCategoriesWithMenuDto>> { Success = false, Message = "Bir Hata Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
         }
 
         public async Task<ResponseDto<object>> UpdateCategory(UpdateCategoryDto dto)

@@ -12,5 +12,6 @@ namespace CaffeAPI.Aplication.Dtos.OrderDtos
         public const string Hazir = "HAZIR";
         public const string TeslimEdildi = "TESLİM_EDILDI";
         public const string IptalEdildi = "IPTAL_EDILDI";
+        public const string Odendi = "ODENDI";
     }
 }

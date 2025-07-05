@@ -17,25 +17,27 @@ namespace CaffeAPI.Aplication.Mapping
     {
         public GeneralMapping()
         {
-            CreateMap<Category,CreateCategoryDto>().ReverseMap();
-            CreateMap<Category,ResultCategoryDto>().ReverseMap();
-            CreateMap<Category,UpdateCategoryDto>().ReverseMap();
-            CreateMap<Category,DetailCategoryDto>().ReverseMap();
+            CreateMap<Category, CreateCategoryDto>().ReverseMap();
+            CreateMap<Category, ResultCategoryDto>().ReverseMap();
+            CreateMap<Category, UpdateCategoryDto>().ReverseMap();
+            CreateMap<Category, DetailCategoryDto>().ReverseMap();
+            CreateMap<Category, ResultCategoriesWithMenuDto>().ReverseMap();
 
-            CreateMap<MenuItem,ResultMenuItemDto>().ReverseMap();
-            CreateMap<MenuItem,CreateMenuItemDto>().ReverseMap();
-            CreateMap<MenuItem,UpdateMenuItemDto>().ReverseMap();
-            CreateMap<MenuItem,DetailMenuItemDto>().ReverseMap();
+            CreateMap<MenuItem, ResultMenuItemDto>().ReverseMap();
+            CreateMap<MenuItem, CreateMenuItemDto>().ReverseMap();
+            CreateMap<MenuItem, UpdateMenuItemDto>().ReverseMap();
+            CreateMap<MenuItem, DetailMenuItemDto>().ReverseMap();
+            CreateMap<MenuItem, CategoriesMenuItemDto>().ReverseMap();
 
-            CreateMap<Table,ResultTableDto>().ReverseMap();
+            CreateMap<Table, ResultTableDto>().ReverseMap();
             CreateMap<Table, CreateTableDto>().ReverseMap();
             CreateMap<Table, UpdateTableDto>().ReverseMap();
             CreateMap<Table, DetailTableDto>().ReverseMap();
 
-            CreateMap<OrderItem,ResultOrderItemDto>().ReverseMap();
-            CreateMap<OrderItem,DetailOrderItemDto>().ReverseMap();
-            CreateMap<OrderItem,CreateOrderItemDto>().ReverseMap();
-            CreateMap<OrderItem,UpdateOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem, ResultOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem, DetailOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem, CreateOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem, UpdateOrderItemDto>().ReverseMap();
 
             CreateMap<Order, ResultOrderDto>().ReverseMap();
             CreateMap<Order, DetailOrderDto>().ReverseMap();

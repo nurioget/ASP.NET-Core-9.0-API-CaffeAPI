@@ -93,14 +93,22 @@ namespace CaffeAPI.Aplication.Services.Concrete
 
         public async Task<ResponseDto<DetailMenuItemDto>> GetByIdMenuItem(int id)
         {
-            var menuItem = await _menuItemRepository.GetByIdAsync(id);
-            var category=await _categoryRepository.GetByIdAsync(menuItem.CategoryId);   
-            if (menuItem == null)
+            try
             {
-                return new ResponseDto<DetailMenuItemDto> { Success = false, Data = null, Message = "Menu Item bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                var menuItem = await _menuItemRepository.GetByIdAsync(id);
+                if (menuItem == null)
+                {
+                    return new ResponseDto<DetailMenuItemDto> { Success = false, Data = null, Message = "Menu Item bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                }
+                var category = await _categoryRepository.GetByIdAsync(menuItem.CategoryId);
+                var result = _mapper.Map<DetailMenuItemDto>(menuItem);
+                return new ResponseDto<DetailMenuItemDto> { Success = true, Data = result };
             }
-            var result = _mapper.Map<DetailMenuItemDto>(menuItem);
-            return new ResponseDto<DetailMenuItemDto> { Success = true, Data = result };
+            catch (Exception ex)
+            {
+                return new ResponseDto<DetailMenuItemDto> { Success = false, Data = null, Message = "Bir hata oluştu: " + ex.Message, ErrorCode = ErrorCodes.Exception };
+            }
+            
         }
 
         public async Task<ResponseDto<object>> UpdateMenuItem(UpdateMenuItemDto dto)

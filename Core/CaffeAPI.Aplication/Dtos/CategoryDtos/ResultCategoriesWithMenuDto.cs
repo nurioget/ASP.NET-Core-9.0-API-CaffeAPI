@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CaffeAPI.Aplication.Dtos.CategoryDtos
 {
-    public class DetailCategoryDto
+    public class ResultCategoriesWithMenuDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

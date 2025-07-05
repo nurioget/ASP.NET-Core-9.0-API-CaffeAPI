@@ -60,26 +60,44 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpPut("UpdateOrderByStatusHazir")]
+        [HttpPut("UpdateOrderStatusHazir")]
         public async Task<IActionResult> UpdateOrderByStatusHazir(int orderId)
         {
-            var result = await _orderServices.UpdateOrderByStatusHazir(orderId);
+            var result = await _orderServices.UpdateOrderStatusHazir(orderId);
             return CreateResponse(result);
         }
 
-        [HttpPut("UpdateOrderByStatusTeslimEdildi")]
+        [HttpPut("UpdateOrderStatusTeslimEdildi")]
         public async Task<IActionResult> UpdateOrderByStatusTeslimEdildi(int orderId)
         {
-            var result = await _orderServices.UpdateOrderByStatusTeslimEdildi(orderId);
+            var result = await _orderServices.UpdateOrderStatusTeslimEdildi(orderId);
             return CreateResponse(result);
         }
 
-        [HttpPut("UpdateOrderByStatusİptalEdildi")]
+        [HttpPut("UpdateOrderStatusİptalEdildi")]
         public async Task<IActionResult> UpdateOrderByStatusİptalEdildi(int orderId)
         {
-            var result = await _orderServices.UpdateOrderByStatusİptalEdildi(orderId);
+            var result = await _orderServices.UpdateOrderStatusİptalEdildi(orderId);
             return CreateResponse(result);
         }
+
+        //[HttpPut("AddOrderItemByOrder")]
+        //public async Task<IActionResult> AddOrderItemByOrder(AddOrderItemByOrderDto dto)
+        //{
+        //    var result = await _orderServices.AddOrderItemByOrder(dto);
+        //    return CreateResponse(result);
+        //}
+
+        [HttpPut("UpdateOrderStatusOdendi")]
+        public async Task<IActionResult> UpdateOrderStatusOdendi(int orderId)
+        {
+            var result = await _orderServices.UpdateOrderStatusOdendi(orderId);
+            return CreateResponse(result);
+        }
+
+
+
     }
+
 }
 

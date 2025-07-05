@@ -1,4 +1,5 @@
 ﻿using CaffeAPI.Aplication.Dtos.OrderDtos;
+using CaffeAPI.Aplication.Dtos.OrderItemDtos;
 using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,10 @@ namespace CaffeAPI.Aplication.Services.Abstract
         Task<ResponseDto<object>> UpdateOrder(UpdateOrderDto dto);
         Task<ResponseDto<object>> DeleteOrder(int orderId);
         Task<ResponseDto<List<ResultOrderDto>>> GetAllOrderWithDetail();
-        Task<ResponseDto<object>> UpdateOrderByStatusHazir(int orderId);
-        Task<ResponseDto<object>> UpdateOrderByStatusTeslimEdildi(int orderId);
-        Task<ResponseDto<object>> UpdateOrderByStatusİptalEdildi(int orderId);
+        Task<ResponseDto<object>> UpdateOrderStatusHazir(int orderId);
+        Task<ResponseDto<object>> UpdateOrderStatusTeslimEdildi(int orderId);
+        Task<ResponseDto<object>> UpdateOrderStatusİptalEdildi(int orderId);
+        //Task<ResponseDto<object>> AddOrderItemByOrder(AddOrderItemByOrderDto dto);
+        Task<ResponseDto<object>> UpdateOrderStatusOdendi(int orderId);
     }
 }

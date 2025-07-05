@@ -15,6 +15,7 @@ namespace CaffeAPI.Aplication.Services.Abstract
         Task <ResponseDto<object>>AddCategory(CreateCategoryDto dto);
         Task<ResponseDto<object>> UpdateCategory(UpdateCategoryDto dto);
         Task<ResponseDto<object>> DeleteCategory(int id);
+        Task<ResponseDto<List<ResultCategoriesWithMenuDto>>> GetCategoriesWithMenuItems();
     }
 }
 
