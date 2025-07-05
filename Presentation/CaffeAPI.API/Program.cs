@@ -3,6 +3,7 @@ using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Dtos.OrderDtos;
 using CaffeAPI.Aplication.Dtos.OrderItemDtos;
 using CaffeAPI.Aplication.Dtos.TablesDtos;
+using CaffeAPI.Aplication.Helpers;
 using CaffeAPI.Aplication.Interfaces;
 using CaffeAPI.Aplication.Mapping;
 using CaffeAPI.Aplication.Services.Abstract;
@@ -38,6 +39,8 @@ builder.Services.AddScoped<IMenuItemServices, MenuItemServices>();
 builder.Services.AddScoped<ITableServices, TableServices>();
 builder.Services.AddScoped<IOrderServices, OrderServices>();
 builder.Services.AddScoped<IOrderItemServices, OrderItemServices>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
+builder.Services.AddScoped<TokenHelpers>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 
