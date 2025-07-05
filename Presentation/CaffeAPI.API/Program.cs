@@ -1,5 +1,8 @@
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
 using CaffeAPI.Aplication.Dtos.MenuItemDtos;
+using CaffeAPI.Aplication.Dtos.OrderDtos;
+using CaffeAPI.Aplication.Dtos.OrderItemDtos;
+using CaffeAPI.Aplication.Dtos.TablesDtos;
 using CaffeAPI.Aplication.Interfaces;
 using CaffeAPI.Aplication.Mapping;
 using CaffeAPI.Aplication.Services.Abstract;
@@ -28,16 +31,29 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ITableRepository, TableRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICategoryServices, CategoryServices>();
 builder.Services.AddScoped<IMenuItemServices, MenuItemServices>();
 builder.Services.AddScoped<ITableServices, TableServices>();
+builder.Services.AddScoped<IOrderServices, OrderServices>();
+builder.Services.AddScoped<IOrderItemServices, OrderItemServices>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryDto>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateCategoryDto>();
+
 builder.Services.AddValidatorsFromAssemblyContaining<CreateMenuItemDto>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateMenuItemDto>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTableDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateTableDto>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateOrderDto>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderItemDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateOrderItemDto>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -15,5 +15,6 @@ namespace CaffeAPI.Aplication.Services.Abstract
         Task<ResponseDto<object>> AddOrder(CreateOrderDto dto);
         Task<ResponseDto<object>> UpdateOrder(UpdateOrderDto dto);
         Task<ResponseDto<object>> DeleteOrder(int orderId);
+        Task<ResponseDto<List<ResultOrderDto>>> GetAllOrderWithDetail();
     }
 }

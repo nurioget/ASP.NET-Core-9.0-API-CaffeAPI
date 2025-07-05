@@ -17,16 +17,20 @@ namespace CaffeAPI.Aplication.Services.Concrete
     public class OrderServices : IOrderServices
     {
         private readonly IGenericRepository<Order> _orderRepository;
+        private readonly IGenericRepository<OrderItem> _orderItemRepository;
+        private readonly IOrderRepository _orderRepository2;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateOrderDto> _createOrderValidator;
         private readonly IValidator<UpdateOrderDto> _updateOrderValidator;
 
-        public OrderServices(IGenericRepository<Order> orderRepository, IMapper mapper, IValidator<CreateOrderDto> createOrderValidator, IValidator<UpdateOrderDto> updateOrderValidator)
+        public OrderServices(IGenericRepository<Order> orderRepository, IMapper mapper, IValidator<CreateOrderDto> createOrderValidator, IValidator<UpdateOrderDto> updateOrderValidator, IGenericRepository<OrderItem> orderItemRepository, IOrderRepository orderRepository2)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
             _createOrderValidator = createOrderValidator;
             _updateOrderValidator = updateOrderValidator;
+            _orderItemRepository = orderItemRepository;
+            _orderRepository2 = orderRepository2;
         }
 
         public async Task<ResponseDto<object>> AddOrder(CreateOrderDto dto)
@@ -71,6 +75,25 @@ namespace CaffeAPI.Aplication.Services.Concrete
             try
             {
                 var orderdb = await _orderRepository.GetAllAsync();
+                var orderItemDb = await _orderItemRepository.GetAllAsync();
+                if (orderdb.Count == 0)
+                {
+                    return new ResponseDto<List<ResultOrderDto>> { Success = false, Data = null, Message = "Sipariş Bulunamadı", ErrorCode = ErrorCodes.NotFound };
+                }
+                var result = _mapper.Map<List<ResultOrderDto>>(orderdb);
+                return new ResponseDto<List<ResultOrderDto>> { Success = true, Data = result };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<List<ResultOrderDto>> { Success = false, Data = null, Message = "Bir Sorun Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
+        public async Task<ResponseDto<List<ResultOrderDto>>> GetAllOrderWithDetail()
+        {
+            try
+            {
+                var orderdb = await _orderRepository2.GetAllOrderWithDetailAsync();
                 if (orderdb.Count == 0)
                 {
                     return new ResponseDto<List<ResultOrderDto>> { Success = false, Data = null, Message = "Sipariş Bulunamadı", ErrorCode = ErrorCodes.NotFound };
@@ -88,7 +111,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
         {
             try
             {
-                var orderdb = await _orderRepository.GetByIdAsync(orderId);
+                var orderdb = await _orderRepository2.GetOrderByIdWithDetailAsync(orderId);
                 if (orderdb == null)
                 {
                     return new ResponseDto<DetailOrderDto> { Success = false, Data = null, Message = "Sipariş Bulunamadı", ErrorCode = ErrorCodes.NotFound };
