@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
 using CaffeAPI.Aplication.Dtos.MenuItemDtos;
+using CaffeAPI.Aplication.Dtos.OrderItemDtos;
 using CaffeAPI.Aplication.Dtos.TablesDtos;
 using CaffeAPI.Domain.Entities;
 using System;
@@ -29,6 +30,11 @@ namespace CaffeAPI.Aplication.Mapping
             CreateMap<Table, CreateTableDto>().ReverseMap();
             CreateMap<Table, UpdateTableDto>().ReverseMap();
             CreateMap<Table, DetailTableDto>().ReverseMap();
+
+            CreateMap<OrderItem,ResultOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem,DetailOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem,CreateOrderItemDto>().ReverseMap();
+            CreateMap<OrderItem,UpdateOrderItemDto>().ReverseMap();
         }
     }
 }
