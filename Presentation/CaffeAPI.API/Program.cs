@@ -9,9 +9,11 @@ using CaffeAPI.Aplication.Mapping;
 using CaffeAPI.Aplication.Services.Abstract;
 using CaffeAPI.Aplication.Services.Concrete;
 using CaffeAPI.Persistence.Context;
+using CaffeAPI.Persistence.Context.Identity;
 using CaffeAPI.Persistence.Repository;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -29,6 +31,21 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     var database = conf.GetConnectionString("DefaultConnection");
     opt.UseSqlServer(database);
 });
+builder.Services.AddDbContext<AddIdentityDbContext>(opt =>
+{
+    var conf = builder.Configuration;
+    var database = conf.GetConnectionString("DefaultConnection");
+    opt.UseSqlServer(database);
+});
+builder.Services.AddIdentity<AppIdentityUser, AppIdentityRole>(opt =>
+{
+    opt.User.RequireUniqueEmail = true;
+    opt.Password.RequireDigit = true;
+    opt.Password.RequiredLength = 6;
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireNonAlphanumeric = false;
+}).AddEntityFrameworkStores<AddIdentityDbContext>().AddDefaultTokenProviders();
 
 
 builder.Services.AddControllers();
