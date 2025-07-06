@@ -1,6 +1,7 @@
 ﻿using CaffeAPI.Aplication.Dtos.CategoryDtos;
 using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using CaffeAPI.Aplication.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _categoryServices.GetByIdCategory(id);
             return CreateResponse(result);
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] CreateCategoryDto dto)
         {
