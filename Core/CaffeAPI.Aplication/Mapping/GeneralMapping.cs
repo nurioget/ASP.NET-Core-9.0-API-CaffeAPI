@@ -4,6 +4,7 @@ using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Dtos.OrderDtos;
 using CaffeAPI.Aplication.Dtos.OrderItemDtos;
 using CaffeAPI.Aplication.Dtos.TablesDtos;
+using CaffeAPI.Aplication.Dtos.UserDtos;
 using CaffeAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace CaffeAPI.Aplication.Mapping
             CreateMap<Order, DetailOrderDto>().ReverseMap();
             CreateMap<Order, CreateOrderDto>().ReverseMap();
             CreateMap<Order, UpdateOrderDto>().ReverseMap();
+
         }
     }
 }
