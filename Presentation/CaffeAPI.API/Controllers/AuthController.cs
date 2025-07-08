@@ -1,4 +1,5 @@
 ﻿using CaffeAPI.Aplication.Dtos.AuthDtos;
+using CaffeAPI.Aplication.Dtos.UserDtos;
 using CaffeAPI.Aplication.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace CaffeAPI.API.Controllers
         }
 
         [HttpPost("genereteToken")]
-        public async Task<IActionResult> GenereteToken(TokenDto dto)
+        public async Task<IActionResult> GenereteToken(LoginDto dto)
         {
             var result = await _authServices.GenereteToken(dto);
             return CreateResponse(result);

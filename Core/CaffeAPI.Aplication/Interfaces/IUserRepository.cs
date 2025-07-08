@@ -14,5 +14,7 @@ namespace CaffeAPI.Aplication.Interfaces
         Task<SignInResult> LoginAsync(LoginDto dto);
         Task LogoutAsync();
         Task<IdentityResult> RegisterAsync(RegisterDto dto);
+        Task<UserDto> CheckUser(string email);
+        Task<SignInResult> CheckUserWithPassword(LoginDto dto);
     }
 }
