@@ -41,7 +41,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                             Role = checkUser.Role,
                         };
                         string token = _tokenHelpers.GenereteToken(tokenDto);
-                        return new ResponseDto<object> { Success = true, Data = token };
+                        return new ResponseDto<object> { Success = true, Data = new { token = token } };
                     }
                     return new ResponseDto<object> { Success = false, Data = null, Message = "Kullanıcı Bulunamadı", ErrorCode = ErrorCodes.Unauthorized };
                 }

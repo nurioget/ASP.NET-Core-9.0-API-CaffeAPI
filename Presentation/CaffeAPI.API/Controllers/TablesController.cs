@@ -1,12 +1,13 @@
 ﻿using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using CaffeAPI.Aplication.Dtos.TablesDtos;
 using CaffeAPI.Aplication.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaffeAPI.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tables")]
     [ApiController]
     public class TablesController : BaseController
     {
@@ -17,6 +18,7 @@ namespace CaffeAPI.API.Controllers
             _tableServices = tableServices;
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpGet]
         public async Task<IActionResult> GetAllTables()
         {
@@ -24,6 +26,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTableById(int id)
         {
@@ -31,13 +34,15 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpGet("getbytablenumber")]
-        public async Task<IActionResult> GetByTableNumber(int tableNumber)
+        [Authorize(Roles = "admin,employe")]
+        [HttpGet("tablenumber")]
+        public async Task<IActionResult> GetByTableNumber([FromQuery]int tableNumber)
         {
             var result = await _tableServices.GetByTableNumber(tableNumber);
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpPost]
         public async Task<IActionResult> AddTable(CreateTableDto dto)
         {
@@ -45,6 +50,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpPut]
         public async Task<IActionResult> UpdateTable(UpdateTableDto dto)
         {
@@ -52,6 +58,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpDelete]
         public async Task<IActionResult> DeleteTable(int id)
         {
@@ -59,28 +66,32 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpGet("getallisactivetablesgeneric")]
-        public async Task<IActionResult> GetAllIsactiveTablesGeneric()
-        {
-            var result = await _tableServices.GetAllActiveTablesGeneric();
-            return CreateResponse(result);
-        }
+        //[Authorize(Roles = "admin,employe")]
+        //[HttpGet("isactivetables")]
+        //public async Task<IActionResult> GetAllIsactiveTablesGeneric()
+        //{
+        //    var result = await _tableServices.GetAllActiveTablesGeneric();
+        //    return CreateResponse(result);
+        //}
 
-        [HttpGet("getallisactivetables")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpGet("isactivetables")]
         public async Task<IActionResult> GetAllIsActiveTables()
         {
             var result = await _tableServices.GetAllTables();
             return CreateResponse(result);
         }
 
-        [HttpPut("updatetablestatusbyid")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpPut("statusbyid")]
         public async Task<IActionResult> UpdateTableStatusById(int id)
         {
             var result = await _tableServices.UpdateTableStatusById(id);
             return CreateResponse(result);
         }
 
-        [HttpPut("updatetablestatusbytablenumber")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpPut("statusbytablenumber")]
         public async Task<IActionResult> UpdateTableStatusByTableNumber(int tableNumber)
         {
             var result = await _tableServices.UpdateTableStatusByTableNumber(tableNumber);

@@ -1,12 +1,13 @@
 ﻿using CaffeAPI.Aplication.Dtos.OrderDtos;
 using CaffeAPI.Aplication.Interfaces;
 using CaffeAPI.Aplication.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaffeAPI.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController]
     public class OrdersController : BaseController
     {
@@ -17,6 +18,7 @@ namespace CaffeAPI.API.Controllers
             _orderServices = orderServices;
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -24,6 +26,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
@@ -31,6 +34,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpPost]
         public async Task<IActionResult> AddOrder(CreateOrderDto dto)
         {
@@ -38,6 +42,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpPut]
         public async Task<IActionResult> UpdateOrder(UpdateOrderDto dto)
         {
@@ -45,6 +50,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin,employe")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
@@ -53,42 +59,41 @@ namespace CaffeAPI.API.Controllers
 
         }
 
-        [HttpGet("GetAllOrderWithDetail")]
+
+        [Authorize(Roles = "admin,employe")]
+        [HttpGet("withdetails")]
         public async Task<IActionResult> GetAllOrderWithDetail()
         {
             var result = await _orderServices.GetAllOrderWithDetail();
             return CreateResponse(result);
         }
 
-        [HttpPut("UpdateOrderStatusHazir")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpPut("status/hazir")]
         public async Task<IActionResult> UpdateOrderByStatusHazir(int orderId)
         {
             var result = await _orderServices.UpdateOrderStatusHazir(orderId);
             return CreateResponse(result);
         }
 
-        [HttpPut("UpdateOrderStatusTeslimEdildi")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpPut("status/teslimedildi")]
         public async Task<IActionResult> UpdateOrderByStatusTeslimEdildi(int orderId)
         {
             var result = await _orderServices.UpdateOrderStatusTeslimEdildi(orderId);
             return CreateResponse(result);
         }
 
-        [HttpPut("UpdateOrderStatusİptalEdildi")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpPut("status/iptaledildi")]
         public async Task<IActionResult> UpdateOrderByStatusİptalEdildi(int orderId)
         {
             var result = await _orderServices.UpdateOrderStatusİptalEdildi(orderId);
             return CreateResponse(result);
         }
 
-        //[HttpPut("AddOrderItemByOrder")]
-        //public async Task<IActionResult> AddOrderItemByOrder(AddOrderItemByOrderDto dto)
-        //{
-        //    var result = await _orderServices.AddOrderItemByOrder(dto);
-        //    return CreateResponse(result);
-        //}
-
-        [HttpPut("UpdateOrderStatusOdendi")]
+        [Authorize(Roles = "admin,employe")]
+        [HttpPut("status/odendi")]
         public async Task<IActionResult> UpdateOrderStatusOdendi(int orderId)
         {
             var result = await _orderServices.UpdateOrderStatusOdendi(orderId);

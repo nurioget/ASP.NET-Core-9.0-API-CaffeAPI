@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CaffeAPI.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : BaseController
     {
@@ -16,7 +16,7 @@ namespace CaffeAPI.API.Controllers
             _authServices = authServices;
         }
 
-        [HttpPost("genereteToken")]
+        [HttpPost]
         public async Task<IActionResult> GenereteToken(LoginDto dto)
         {
             var result = await _authServices.GenereteToken(dto);

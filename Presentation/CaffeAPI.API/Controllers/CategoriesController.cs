@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CaffeAPI.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoriesController : BaseController
     {
@@ -39,6 +39,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto dto)
         {
@@ -46,6 +47,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<IActionResult> DeleteCategory(int id)
         {
@@ -53,7 +55,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpGet("GetAllCategoriesWithMenuItems")]
+        [HttpGet("withmenuitems")]
         public async Task<IActionResult> GetAllCategoriesWithMenuItems()
         {
             var result = await _categoryServices.GetCategoriesWithMenuItems();
