@@ -38,7 +38,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
                         {
                             Email = dto.Email,
                             Id = checkUser.Id,
-                            Role = "Admin"
+                            Role = checkUser.Role,
                         };
                         string token = _tokenHelpers.GenereteToken(tokenDto);
                         return new ResponseDto<object> { Success = true, Data = token };

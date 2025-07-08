@@ -31,7 +31,7 @@ namespace CaffeAPI.API.Controllers
             var result = await _categoryServices.GetByIdCategory(id);
             return CreateResponse(result);
         }
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] CreateCategoryDto dto)
         {
