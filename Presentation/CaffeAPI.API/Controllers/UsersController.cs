@@ -22,5 +22,19 @@ namespace CaffeAPI.API.Controllers
             var result = await _userServices.Register(dto);
             return CreateResponse(result);
         }
+
+        [HttpPost("CreateRole")]    
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            var result = await _userServices.CreateRole(roleName);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("AddRoleToUser")]
+        public async Task<IActionResult> AddRoleToUser(string email, string roleName)
+        {
+            var result = await _userServices.AddToRole(email, roleName);
+            return CreateResponse(result);
+        }
     }
 }

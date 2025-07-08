@@ -22,6 +22,38 @@ namespace CaffeAPI.Aplication.Services.Concrete
             _registerValidator = registerValidator;
         }
 
+        public async Task<ResponseDto<object>> AddToRole(string email, string roleName)
+        {
+            try
+            {
+                var result = await _userRepository.AddRoleToUserAsync(email,roleName);
+                if (result)
+                    return new ResponseDto<object> { Success = true, Data = null, Message = "Rol Ataması Yapıldı" };
+
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Rol Ataması Yapılırken Hata Oluştu", ErrorCode = ErrorCodes.BadRequest };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Hata Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
+        public async Task<ResponseDto<object>> CreateRole(string roleName)
+        {
+            try
+            {
+                var result=await _userRepository.CreateRoleAsync(roleName);
+                if (result)
+                    return new ResponseDto<object> { Success = true, Data = null, Message = "Rol Oluşturuldu" };
+
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Rol Oluşturulurulurken Hata Oluştu", ErrorCode = ErrorCodes.BadRequest };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Hata Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
         public async Task<ResponseDto<object>> Register(RegisterDto dto)
         {
             try
