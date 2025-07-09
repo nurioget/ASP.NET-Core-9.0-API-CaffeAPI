@@ -1,9 +1,9 @@
 ﻿using CaffeAPI.Aplication.Dtos.CategoryDtos;
-using CaffeAPI.Aplication.Dtos.ResponseDtos;
 using CaffeAPI.Aplication.Services.Abstract;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+
 
 namespace CaffeAPI.API.Controllers
 {
@@ -12,16 +12,23 @@ namespace CaffeAPI.API.Controllers
     public class CategoriesController : BaseController
     {
         private readonly ICategoryServices _categoryServices;
+        private readonly Serilog.ILogger _log;
 
-        public CategoriesController(ICategoryServices categoryServices)
+        public CategoriesController(ICategoryServices categoryServices, Serilog.ILogger log)
         {
             _categoryServices = categoryServices;
+            _log = log;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
+            _log.Information("Get-Categories method called ");
             var result = await _categoryServices.GetAllCategories();
+            _log.Information("IGet-Categories method called " + result.Success);
+            _log.Warning("wGet-Categories method called " + result.Success);
+            _log.Error("EGet-Categories method called " + result.Success);
+            _log.Debug("DGet-Categories method called " + result.Success);
             return CreateResponse(result);
         }
 

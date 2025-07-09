@@ -10,6 +10,7 @@ using CaffeAPI.Aplication.Services.Abstract;
 using CaffeAPI.Aplication.Services.Concrete;
 using CaffeAPI.Persistence.Context;
 using CaffeAPI.Persistence.Context.Identity;
+using CaffeAPI.Persistence.Middlewares;
 using CaffeAPI.Persistence.Repository;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using Serilog;
 using System;
 using System.Text;
 
@@ -107,6 +109,16 @@ builder.Services.AddAuthentication(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 
+//Serilog Configurations
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Services.AddSingleton<Serilog.ILogger>(Log.Logger);
+builder.Host.UseSerilog();
+
+
 var app = builder.Build();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -127,6 +139,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<SerilogMiddleware>();//Middleware 
 app.UseAuthentication();
 app.UseAuthorization();
 
