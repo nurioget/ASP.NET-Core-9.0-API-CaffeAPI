@@ -33,7 +33,7 @@ namespace CaffeAPI.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdCategory(int id)
+        public async Task<IActionResult> GetByIdCategory([FromQuery]int id)
         {
             var result = await _categoryServices.GetByIdCategory(id);
             return CreateResponse(result);

@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
 using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Dtos.OrderDtos;
@@ -125,6 +126,11 @@ builder.Services.AddSingleton<Serilog.ILogger>(Log.Logger);
 builder.Host.UseSerilog();
 builder.Services.AddHttpContextAccessor(); 
 
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(
+    builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 var app = builder.Build();
 
@@ -143,6 +149,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 
