@@ -26,7 +26,7 @@ namespace CaffeAPI.API.Controllers
         }
 
         [Authorize(Roles = "admin,employe")]
-        [HttpPost("createrole")]    
+        [HttpPost("createrole")]
         public async Task<IActionResult> CreateRole(string roleName)
         {
             var result = await _userServices.CreateRole(roleName);
@@ -38,6 +38,13 @@ namespace CaffeAPI.API.Controllers
         public async Task<IActionResult> AddRoleToUser(string email, string roleName)
         {
             var result = await _userServices.AddToRole(email, roleName);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("registerdefault")]
+        public async Task<IActionResult> RegisterDefault(RegisterDto dto)
+        {
+            var result = await _userServices.RegisterDefault(dto);
             return CreateResponse(result);
         }
     }

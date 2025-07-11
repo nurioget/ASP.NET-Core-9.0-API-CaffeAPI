@@ -26,7 +26,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
         {
             try
             {
-                var result = await _userRepository.AddRoleToUserAsync(email,roleName);
+                var result = await _userRepository.AddRoleToUserAsync(email, roleName);
                 if (result)
                     return new ResponseDto<object> { Success = true, Data = null, Message = "Rol Ataması Yapıldı" };
 
@@ -42,7 +42,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
         {
             try
             {
-                var result=await _userRepository.CreateRoleAsync(roleName);
+                var result = await _userRepository.CreateRoleAsync(roleName);
                 if (result)
                     return new ResponseDto<object> { Success = true, Data = null, Message = "Rol Oluşturuldu" };
 
@@ -67,11 +67,41 @@ namespace CaffeAPI.Aplication.Services.Concrete
 
                 if (result.Succeeded)
                 {
-                    return new ResponseDto<object> { Success = true, Data = null, Message = "Kayıt İşlemi Başarılı"};
+                    return new ResponseDto<object> { Success = true, Data = null, Message = "Kayıt İşlemi Başarılı" };
                 }
                 else
                 {
-                    return new ResponseDto<object> { Success = false, Data = null, Message = result.Errors.FirstOrDefault().Description};
+                    return new ResponseDto<object> { Success = false, Data = null, Message = result.Errors.FirstOrDefault().Description };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto<object> { Success = false, Data = null, Message = "Bir Hata Oluştu", ErrorCode = ErrorCodes.Exception };
+            }
+        }
+
+        public async Task<ResponseDto<object>> RegisterDefault(RegisterDto dto)
+        {
+            try
+            {
+                var validate = await _registerValidator.ValidateAsync(dto);
+                if (!validate.IsValid)
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = validate.Errors.FirstOrDefault().ErrorMessage, ErrorCode = ErrorCodes.ValidationError, };
+                }
+                var result = await _userRepository.RegisterAsync(dto);
+
+                if (result.Succeeded)
+                {
+                    var roleResult = await _userRepository.AddRoleToUserAsync(dto.Email, "user");
+                    if (roleResult)
+                        return new ResponseDto<object> { Success = true, Data = null, Message = "Kayıt İşlemi Başarılı Bir Şekilde Gerçekleştirilmiştir" };
+                    else
+                        return new ResponseDto<object> { Success = false, Data = null, Message = "Kayıt İşlemi Başarılı, Ancak Rol Ataması Yapılamadı Lütfen Yetkiliyle İletişime Geçiniz", ErrorCode = ErrorCodes.BadRequest };
+                }
+                else
+                {
+                    return new ResponseDto<object> { Success = false, Data = null, Message = result.Errors.FirstOrDefault().Description };
                 }
             }
             catch (Exception ex)
