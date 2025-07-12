@@ -4,6 +4,7 @@ using CaffeAPI.Aplication.Dtos.CategoryDtos;
 using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Dtos.OrderDtos;
 using CaffeAPI.Aplication.Dtos.OrderItemDtos;
+using CaffeAPI.Aplication.Dtos.ReviewDtos;
 using CaffeAPI.Aplication.Dtos.TablesDtos;
 using CaffeAPI.Aplication.Dtos.UserDtos;
 using CaffeAPI.Domain.Entities;
@@ -50,6 +51,11 @@ namespace CaffeAPI.Aplication.Mapping
             CreateMap<CaffeInfo, DetailCaffeInfoDto>().ReverseMap();
             CreateMap<CaffeInfo, CreateCaffeInfoDto>().ReverseMap();
             CreateMap<CaffeInfo, UpdateCaffeInfoDto>().ReverseMap();
+
+            CreateMap<Review, UpdateReviewDto>().ReverseMap();
+            CreateMap<Review, ResultReviewDto>().ReverseMap();
+            CreateMap<Review, CreateReviewDto>().ReverseMap();
+            CreateMap<Review, UpdateReviewDto>().ReverseMap();
 
         }
     }

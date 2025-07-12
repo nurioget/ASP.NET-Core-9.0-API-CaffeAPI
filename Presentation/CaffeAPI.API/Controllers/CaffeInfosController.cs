@@ -1,5 +1,6 @@
 ﻿using CaffeAPI.Aplication.Dtos.CaffeInfoDtos;
 using CaffeAPI.Aplication.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> AddCaffeInfo(CreateCaffeInfoDto dto)
         {
@@ -37,6 +39,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateCaffeInfo(UpdateCaffeInfoDto dto)
         {
@@ -44,6 +47,7 @@ namespace CaffeAPI.API.Controllers
             return CreateResponse(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<IActionResult> DeleteCaffeInfo(int id)
         {
