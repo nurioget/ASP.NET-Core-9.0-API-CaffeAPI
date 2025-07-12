@@ -78,7 +78,7 @@ namespace CaffeAPI.Aplication.Services.Concrete
             {
                 return new ResponseDto<List<ResultReviewDto>> { Success = false, Data = null, Message = "Bir Hata Oluştu", ErrorCode = ErrorCodes.Exception };
             }
-        }
+       }
 
         public async Task<ResponseDto<DetailReviewDto>> GetByIdReview(int id)
         {

@@ -55,7 +55,7 @@ namespace CaffeAPI.Aplication.Mapping
             CreateMap<Review, UpdateReviewDto>().ReverseMap();
             CreateMap<Review, ResultReviewDto>().ReverseMap();
             CreateMap<Review, CreateReviewDto>().ReverseMap();
-            CreateMap<Review, UpdateReviewDto>().ReverseMap();
+            CreateMap<Review, DetailReviewDto>().ReverseMap();
 
         }
     }
