@@ -1,4 +1,5 @@
 using AspNetCoreRateLimit;
+using CaffeAPI.Aplication.Dtos.CaffeInfoDtos;
 using CaffeAPI.Aplication.Dtos.CategoryDtos;
 using CaffeAPI.Aplication.Dtos.MenuItemDtos;
 using CaffeAPI.Aplication.Dtos.OrderDtos;
@@ -67,6 +68,7 @@ builder.Services.AddScoped<IOrderServices, OrderServices>();
 builder.Services.AddScoped<IOrderItemServices, OrderItemServices>();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<ICaffeInfoServices, CaffeInfoServices>();
 builder.Services.AddScoped<TokenHelpers>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
@@ -85,6 +87,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<UpdateOrderDto>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderItemDto>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateOrderItemDto>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCaffeInfoDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateCaffeInfoDto>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
